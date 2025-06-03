@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inkwell - Gist Reader</title>
+</head>
+<body>
+  <h1>Inkwell</h1>
+  <pre id="content">Loading gist...</pre>
+
+  <script>
+    const gistId = window.location.pathname.slice(1); // remove the "/"
+    const container = document.getElementById("content");
+
+    if (gistId) {
+      fetch(`https://api.github.com/gists/${gistId}`)
+        .then(res => res.json())
+        .then(data => {
+          const file = Object.values(data.files)[0];
+          container.textContent = file.content;
+        })
+        .catch(err => {
+          container.textContent = "Failed to load gist.";
+        });
+    } else {
+      container.textContent = "No gist ID provided in the URL.";
+    }
+  </script>
+</body>
+</html>
 
